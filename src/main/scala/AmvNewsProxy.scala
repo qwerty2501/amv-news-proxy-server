@@ -11,13 +11,15 @@ object AmvNewsProxy extends App {
   implicit val actorSystem = ActorSystem()
   implicit val ioSystem    = IOSystem()
 
-  HttpServer.start("example-server", 9000) { initContext =>
+  HttpServer.start("amv-news-proxy", 9000) { initContext =>
     new Initializer(initContext) {
-      override def onConnect = serverContext => new RequestHandler(serverContext) {
-        override def handle: PartialHandler[Http] = {
-          case request @ Get on Root => Callback.successful(request.ok("Hello world!"))
+      override def onConnect =
+        serverContext =>
+          new RequestHandler(serverContext) {
+            override def handle: PartialHandler[Http] = {
+              case request @ Get on Root => Callback.successful(request.ok("Hello world!"))
+            }
         }
-      }
     }
   }
 }
